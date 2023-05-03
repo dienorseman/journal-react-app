@@ -3,14 +3,21 @@ import { IconButton } from "@mui/material";
 import { JournalLayout } from "../layout/JournalLayout";
 import { NoteView, NothingSelectedView } from "../views";
 import { Add, AddCircleOutlineOutlined } from "@mui/icons-material";
+import { startNewNote } from "../../store/journal/thunks";
+import { useDispatch } from "react-redux";
 
 
 export const HomePage = () => {
+  const dispatch = useDispatch();
+  const handleAddNew = () => {
+    dispatch(startNewNote());
+  };
   return (
     <JournalLayout>
       <NothingSelectedView  />
       {/* <NoteView /> */}
       <IconButton
+        onClick={handleAddNew}
         sx={{
           backgroundColor: "error.main",
           color: "white",
