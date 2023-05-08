@@ -1,60 +1,53 @@
 import { TurnedInNot, TurnedInNotOutlined } from "@mui/icons-material"
 import { Box, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { setActiveNote } from '../../store/journal/journalSlice'
+import { NoteItem } from "./NoteItem"
+
 
 
 export const SideBar = ( { drawerWidth } ) => {
-  const { displayName } = useSelector( state => state.auth )
 
-  return (
-    <Box
-        component="nav"
-        sx={{
-            width: { sm: drawerWidth },
-            flexShrink: { sm: 0 },
-        }}
-    >
-        <Drawer
-            variant="permanent"
-            open
+    const { displayName } = useSelector( state => state.auth )
+
+    const { notes } = useSelector( state => state.journal )
+
+    const dispatch = useDispatch();
+
+
+    return (
+        <Box
+            component="nav"
             sx={{
-                display: { xs: 'none', sm: 'block'  },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-            }}  
+                width: { sm: drawerWidth },
+                flexShrink: { sm: 0 },
+            }}
         >
-            <Toolbar>
-                <Typography variant="h6" noWrap component="div">
-                    { displayName }
-                </Typography>
+            <Drawer
+                variant="permanent"
+                open
+                sx={{
+                    display: { xs: 'none', sm: 'block'  },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}  
+            >
+                <Toolbar>
+                    <Typography variant="h6" noWrap component="div">
+                        { displayName }
+                    </Typography>
+                    
+                </Toolbar>
                 
-            </Toolbar>
-            
-            <Divider />
+                <Divider />
 
-            <List>
-                { [ 'January', 'February', 'March' ].map((text, index) => (	
-                    <ListItem
-                        key={text} disablePadding                    
-                    >
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <TurnedInNot variant=""/>
-                            </ListItemIcon>
-                            <Grid 
-                                container                            
-                            >
-                                <ListItemText primary={text} />
-                                <ListItemText secondary={'Aun hay tiempo, que no es tiempo.'} />
+                <List>
+                    { notes.map( note => (	
+                        <NoteItem key={note.id} { ...note } />
+                    ))}
+                </List>
 
-                            </Grid>
-                        </ListItemButton>
+            </Drawer>
 
-                    </ListItem>
-                ))}
-            </List>
-
-        </Drawer>
-
-    </Box>
-  )
+        </Box>
+    )
 }

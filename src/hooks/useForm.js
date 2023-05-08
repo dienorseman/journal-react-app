@@ -9,6 +9,10 @@ export const useForm = ( initialState = {}, formValidations = {} ) => {
         createValidators();
     }, [ values ]);
 
+    useEffect(() => {
+        setValues( initialState );
+    }, [initialState]);
+
     const isFormValid = useMemo( () => {
         for (const value of Object.keys( formValidations )) {
             if ( formValiadion[`${value}Valid`] !== null ) return false;
@@ -39,6 +43,7 @@ export const useForm = ( initialState = {}, formValidations = {} ) => {
 
     return {
         ...values,
+        values,
         reset,
         onInputChange,
         isFormValid,
